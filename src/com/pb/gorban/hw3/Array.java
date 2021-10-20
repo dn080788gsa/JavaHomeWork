@@ -25,7 +25,7 @@ public class Array {
         System.out.println("Кол-во позитивных элементов массива = " + countPositive);
 
         //Сортируем массив пузырьком
-        boolean unsorted = true;All activity
+        boolean unsorted = true;
         int temp;
         while (unsorted) {
             unsorted = false;
