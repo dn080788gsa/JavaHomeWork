@@ -15,7 +15,9 @@ public class Array {
         for (int i = 0; i < 10; i++) {
             userArr[i] = scan.nextInt();
             sum = sum + userArr[i];
-            if (userArr[i] > 0) countPositive++;
+            if (userArr[i] > 0) {
+                countPositive++;
+            }
         }
         //Выводим значения
         System.out.println("Массив заполнен и равен: " + Arrays.toString(userArr));
@@ -23,7 +25,7 @@ public class Array {
         System.out.println("Кол-во позитивных элементов массива = " + countPositive);
 
         //Сортируем массив пузырьком
-        boolean unsorted = true;
+        boolean unsorted = true;All activity
         int temp;
         while (unsorted) {
             unsorted = false;
