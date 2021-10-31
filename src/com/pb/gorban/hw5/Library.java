@@ -18,7 +18,7 @@ public class Library {
             System.out.println((i+1) + ". " + books[i].name + " (" + books[i].author + ", " + books[i].crDate + ")");
         }
         System.out.println();
-        System.out.println("Список читателей");
+        System.out.println("Список читателей:");
         for (int i=0; i<readers.length; i++) {
             System.out.println((i+1) + ". Номер " + readers[i].customerNum + " - " + readers[i].fullName + ", факультет: " + readers[i].faculty + ", телефон: " + readers[i].phone);
         }
