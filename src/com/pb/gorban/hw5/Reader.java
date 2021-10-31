@@ -1,11 +1,11 @@
 package com.pb.gorban.hw5;
 
 public class Reader {
-    String fullName;
-    int customerNum;
-    String faculty;
-    String birthDate;
-    String phone;
+    private String fullName;
+    private int customerNum;
+    private String faculty;
+    private String birthDate;
+    private String phone;
 
     public Reader(String fullName, int customerNum, String faculty, String birthDate, String phone) {
         this.fullName = fullName;
@@ -13,6 +13,26 @@ public class Reader {
         this.faculty = faculty;
         this.birthDate = birthDate;
         this.phone = phone;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public int getCustomerNum() {
+        return customerNum;
+    }
+
+    public String getFaculty() {
+        return faculty;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
     }
 
     public void takeBook(int bookCounter) {
