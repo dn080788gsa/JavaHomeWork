@@ -13,7 +13,7 @@ public class Atelier {
         dressWomen(clothes);
     }
 
-    public static void dressMan(Clothes[] clothes) {
+    private static void dressMan(Clothes[] clothes) {
         for (Clothes clothe : clothes) {
             if (clothe instanceof ManClothes) {
                 System.out.println(clothe.getType() + ": Размер-" + clothe.getSize() + " (" + clothe.getSize().getDescription() + ", EUR:" + clothe.getSize().getEuroSize() + "), Цвет-" + clothe.getColor() + ", Цена-" + clothe.getPrise() + "$");
@@ -21,7 +21,7 @@ public class Atelier {
         }
     }
 
-    public static void dressWomen(Clothes[] clothes) {
+    private static void dressWomen(Clothes[] clothes) {
         for (Clothes clothe : clothes) {
             if (clothe instanceof WomenClothes) {
                 System.out.println(clothe.getType() + ": Размер-" + clothe.getSize() + " (" + clothe.getSize().getDescription() + ", EUR:" + clothe.getSize().getEuroSize() + "), Цвет-" + clothe.getColor() + ", Цена-" + clothe.getPrise() + "$");
