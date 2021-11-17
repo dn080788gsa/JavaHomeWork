@@ -8,18 +8,20 @@ public class OnlineShop {
         boolean flagRegister = true;
         boolean flagSingIn = true;
         System.out.println("Добро пожаловать в магазин WWW.SHOP.COM");
+        System.out.println();
+
         //Цикл регистрации
         while (flagRegister) {
-            System.out.println();
             System.out.println("Прошу зарегистрироваться");
             String login = getUserString("Введите логин");
             String password = getUserString("Введите пароль");
             String confirmPassword = getUserString("Подтвердите пароль");
 
-
+            //попытка регистрации
             try {
                 if (auth.singUp(login, password, confirmPassword)) {
                     System.out.println("Пользователь " + login + " успешно зарегистрирован");
+                    System.out.println();
                     flagRegister = false;
                     System.out.println("Для входа введите логин и пароль");
 
