@@ -84,9 +84,7 @@ public class FileNumbers {
                         }
                         str += rowNumbers[k] + " ";
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    } catch (Exception e) {}
                 }
 
                 newStrArr[j] = str;
