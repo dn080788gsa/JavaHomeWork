@@ -1,7 +1,6 @@
 package com.pb.gorban.hw10;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class NumBox<T extends Number> {
     private T[] numbers;
@@ -23,20 +22,14 @@ public class NumBox<T extends Number> {
             } else {
                 count++;
                 if (count == numbers.length) {
-                    throw new Exception("Превышено кол-во элементов >" + numbers.length);
+                    throw new WriteError("Превышено кол-во элементов - " + Arrays.stream(numbers).count());
                 }
             }
         }
     }
 
     public int length() {
-        int count = 0;
-        for (T x: numbers) {
-            if (x != null) {
-                count++;
-            }
-        }
-        return count;
+        return (int) Arrays.stream(numbers).count();
     }
 
     public double average() {
