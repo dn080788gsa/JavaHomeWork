@@ -24,8 +24,9 @@ public class Main {
         //найти контакт
         System.out.println("Хотите найти контакт?");
         if (getUserString("Нажмите Y").toLowerCase(Locale.ROOT).equals("y")) {
-            String userSearchString = getUserString("Для поиска контакта введите Имя");
-            System.out.println(book.findContact(userSearchString));
+            String userSearchString = getUserString("Для поиска контакта введите Имя или Телефон");
+            Contact con = book.findContact(userSearchString);
+            System.out.println("{" + con.getName() + ": " + con + " }");
         }
         System.out.println();
 
@@ -53,6 +54,7 @@ public class Main {
         System.out.println("======SORT=======");
         //вывод всех записей
         demonstrate("before sort", book);
+        System.out.println();
         System.out.println();
         System.out.println("after sort");
         for (Map.Entry<String, Contact> me : book.getAllBookSort().entrySet()) {

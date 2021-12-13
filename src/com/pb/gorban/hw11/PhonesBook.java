@@ -4,10 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Consumer;
 
 
 public class PhonesBook {
-    static TreeMap<String, Contact> phonesBook = new TreeMap<>();
+    private static TreeMap<String, Contact> phonesBook;
+
+    public PhonesBook(Comparator c) {
+        phonesBook = new TreeMap<>(c);
+    }
+
+    public PhonesBook() {
+        phonesBook = new TreeMap<>();
+    }
+
+    //private TreeMap<String, Contact> phonesBook = new TreeMap<>();
 
     //добавление элемента
     public void addContact(Contact contact) {
@@ -21,23 +32,45 @@ public class PhonesBook {
 
     //поиск элементов
     public Contact findContact (String key) {
-        return  phonesBook.get(key);
+        Contact contact = phonesBook.get(key);
+        if (contact == null) {
+            //производим поиск по phone во всех контактах
+            for (Map.Entry<String, Contact> m: phonesBook.entrySet()) {
+                Contact c = m.getValue();
+                if (c.getPhones().contains(key)) {
+                    contact = c;
+                }
+            }
+        }
+        return  contact;
     }
 
     //вывод всех записей с сортировкой по указанному полю (можно ограничиться двумя на выбор)
     public TreeMap<String, Contact> getAllBookSort() {
-        TreeMap<String, Contact> sorted = new TreeMap<String, Contact>(new Comparator<String>() {
+        Comparator<Contact> multiComp = new ContactNameComparator()
+                .thenComparing(new ContactTimeComparator());
+
+        TreeMap<String, Contact> unsorted = new TreeMap<String, Contact>();
+        TreeMap<String, Contact> sorted = new TreeMap<String, Contact>();
+        TreeSet<Contact> persons = new TreeSet<>(multiComp);
+        unsorted.putAll(phonesBook);
+
+        for (Map.Entry<String, Contact> c: unsorted.entrySet()) {
+            persons.add(new Contact(c.getValue().getName(), c.getValue().getBirthDate(), c.getValue().getPhones(), c.getValue().getPath()));
+        }
+
+        persons.forEach(new Consumer<Contact>() {
             @Override
-            public int compare(String key1, String key2) {
-                return key1.compareToIgnoreCase(key2);
+            public void accept(Contact p) {
+                sorted.put(p.getName(), unsorted.get(p.getName()));
             }
         });
-        sorted.putAll(phonesBook);
+
         return sorted;
     }
 
     public TreeMap<String, Contact> getAllBook() {
-        TreeMap<String, Contact> map = new TreeMap<String, Contact>();
+        TreeMap<String, Contact> map = new TreeMap<>();
         map.putAll(phonesBook);
         return map;
     }
@@ -96,4 +129,23 @@ public class PhonesBook {
         phonesBook = treeMap;
         return treeMap;
     }
+
+    public static class ContactNameComparator implements Comparator<Contact> {
+        @Override
+        public int compare(Contact contact1, Contact contact2) {
+            return contact1.getName().compareTo(contact2.getName());
+        }
+    }
+
+
+    static class ContactTimeComparator implements Comparator<Contact> {
+
+        @Override
+        public int compare(Contact contact, Contact t1) {
+            Date date1 = new Date(contact.getChangeTime());
+            Date date2 = new Date(t1.getChangeTime());
+            return Long.compare(date1.getTime(), date2.getTime());
+        }
+    }
+
 }

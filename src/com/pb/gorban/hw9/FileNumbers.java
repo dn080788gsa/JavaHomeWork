@@ -25,7 +25,6 @@ public class FileNumbers {
 
     }
 
-
     public static void createNumbersFile() {
         OutputStream os = null;
         Logger LOGGER = Logger.getLogger(FileNumbers.class.getName());
@@ -85,6 +84,7 @@ public class FileNumbers {
                         str += rowNumbers[k] + " ";
 
                     } catch (Exception e) {}
+
                 }
 
                 newStrArr[j] = str;

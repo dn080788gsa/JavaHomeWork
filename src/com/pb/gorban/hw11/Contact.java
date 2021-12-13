@@ -2,7 +2,6 @@ package com.pb.gorban.hw11;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 
 public class Contact {
@@ -69,27 +68,4 @@ public class Contact {
         return "{phones: " + getPhones().toString() + ", address: " + getPath() + ", birth date: " + getBirthDate() + ", change time: " + dateStr + "}";
     }
 
-    public static class ContactNameComparator implements Comparator<Contact> {
-
-        @Override
-        public int compare(Contact contact1, Contact contact2) {
-            return contact1.getName().compareTo(contact2.getName());
-        }
-    }
-
-    public static class ContactChangeTimeComparator implements Comparator<Contact> {
-
-        @Override
-        public int compare(Contact contact1, Contact contact2) {
-            Date date1 = new Date(contact1.getChangeTime());
-            Date date2 = new Date(contact2.getChangeTime());
-            if (date1.getTime() > date2.getTime()) {
-                return 1;
-            } else if (date1.getTime() < date2.getTime()) {
-                return -1;
-            } else{
-                return 0;
-            }
-        }
-    }
 }
