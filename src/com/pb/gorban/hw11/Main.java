@@ -12,8 +12,7 @@ public class Main {
             repeatLoop = true;
             boolean repeatContact;
             System.out.println("book | add | edit | delete | export | search | load | exit");
-            String menu = getUserString("Укажите раздел").toLowerCase(Locale.ROOT);
-            switch (menu) {
+            switch (getUserString("Укажите раздел").toLowerCase(Locale.ROOT)) {
                 case "book":
                     book.getAllBookSort().entrySet().forEach(el->System.out.println("{" + el.getKey() + ": " + el.getValue() + "}"));
                     System.out.println("=======================");
@@ -53,8 +52,7 @@ public class Main {
                     }
                     break;
                 case "search":
-                    String userSearchString = getUserString("Для поиска контакта введите Имя или Телефон");
-                    Contact con = book.findContact(userSearchString);
+                    Contact con = book.findContact(getUserString("Для поиска контакта введите Имя или Телефон"));
                     System.out.println("{" + con.getName() + ": " + con + " }");
                     break;
                 case "load":
