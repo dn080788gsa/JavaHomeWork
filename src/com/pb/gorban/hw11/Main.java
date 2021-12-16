@@ -5,95 +5,80 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        //получим от пользователя контакт тел книги
-        boolean repeatContact;
+        boolean repeatLoop;
         PhonesBook book = new PhonesBook();
-
+        System.out.println("MENU");
         do {
-            repeatContact = false;
-            //добавим контакт в телефонную книгу
-            book.addContact(createContact(getUserString("Введите Имя")));
-            if (getUserString("Создать еще контакт?\nДля создания следующего контакта введи Y").toLowerCase(Locale.ROOT).equals("y")) {
-                repeatContact = true;
+            repeatLoop = true;
+            boolean repeatContact;
+            System.out.println("book | add | edit | delete | export | search | load | exit");
+            String menu = getUserString("Укажите раздел").toLowerCase(Locale.ROOT);
+            switch (menu) {
+                case "book":
+                    book.getAllBookSort().entrySet().forEach(el->System.out.println("{" + el.getKey() + ": " + el.getValue() + "}"));
+                    System.out.println("=======================");
+                    System.out.println();
+                    break;
+                case "exit":
+                    repeatLoop = false;
+                    break;
+                case "add":
+                    do {
+                        repeatContact = false;
+                        book.addContact(createContact(getUserString("Введите Имя")));
+                        if (getUserString("Создать еще контакт?\nДля создания следующего контакта введи Y").toLowerCase(Locale.ROOT).equals("y")) {
+                            repeatContact = true;
+                        }
+                    } while (repeatContact);
+                    break;
+                case "edit":
+                    String name = getUserString("Для редактирования контакта введите Имя");
+                    if (book.getAllBook().containsKey(name)) {
+                        String field = getUserString("Выбери поле phone|birth_date|address существующего контакта");
+                        book.newEditContact(name, field, getUserString("Укажи новое значение поля " + field));
+                    } else {
+                        book.edit(name, createContact(name));
+                    }
+                    break;
+                case "delete":
+                    String n = getUserString("Для удаления контакта введите Имя");
+                    book.deleteContact(n);
+                    System.out.println("Контакт " + n + " удален");
+                    break;
+                case "export":
+                    try {
+                        book.bookToFile(getUserString("Введите имя файла"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "search":
+                    String userSearchString = getUserString("Для поиска контакта введите Имя или Телефон");
+                    Contact con = book.findContact(userSearchString);
+                    System.out.println("{" + con.getName() + ": " + con + " }");
+                    break;
+                case "load":
+                    try {
+                        TreeMap<String, Contact> newBook = PhonesBook.bookFromJSON(getUserString("Введите имя файла: files/XXXXX.txt"));
+                        System.out.println("LOADED:");
+                        for (Map.Entry<String, Contact> me : newBook.entrySet()) {
+                            System.out.println("{" + me.getKey() + ": " + me.getValue() + "}");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    System.out.println("Неверно указан раздел для перехода");
+                    System.out.println();
+                    System.out.println("MENU");
+                    break;
             }
-        } while (repeatContact);
-
-        demonstrate("Наполнили книгу", book);
-        System.out.println();
-
-        //найти контакт
-        System.out.println("Хотите найти контакт?");
-        if (getUserString("Нажмите Y").toLowerCase(Locale.ROOT).equals("y")) {
-            String userSearchString = getUserString("Для поиска контакта введите Имя или Телефон");
-            Contact con = book.findContact(userSearchString);
-            System.out.println("{" + con.getName() + ": " + con + " }");
-        }
-        System.out.println();
-
-        //Удалить контакт
-        System.out.println("Хотите удалить контакт?");
-        if (getUserString("Нажмите Y").toLowerCase(Locale.ROOT).equals("y")) {
-            String name = getUserString("Для удаления контакта введите Имя");
-            book.deleteContact(name);
-            demonstrate("Контакт " + name + " удален", book);
-        }
-
-        //Редактировать контакт
-        System.out.println("Хотите редактировать контакт?");
-        if (getUserString("Нажмите Y").toLowerCase(Locale.ROOT).equals("y")) {
-            String name = getUserString("Для редактирования контакта введите Имя");
-            if (book.getAllBook().containsKey(name)) {
-                String field = getUserString("Выбери поле phone|birth_date|address существующего контакта");
-                book.newEditContact(name, field, getUserString("Укажи новое значение поля " + field));
-            } else {
-                book.edit(name, createContact(name));
-            }
-            demonstrate("Контакт " + name + " отредактирован", book);
-        }
-
-        System.out.println("======SORT=======");
-        //вывод всех записей
-        demonstrate("before sort", book);
-        System.out.println();
-        System.out.println();
-        System.out.println("after sort");
-        for (Map.Entry<String, Contact> me : book.getAllBookSort().entrySet()) {
-            System.out.println("{" + me.getKey() + ": " + me.getValue() + "}");
-        }
-        System.out.println();
-        System.out.println("=======================");
-
-        //записать в файл все данные
-        System.out.println("Хотите записать в файл все данные?");
-        if (getUserString("Нажмите Y/N").toLowerCase(Locale.ROOT).equals("y")) {
-            try {
-                book.bookToFile(getUserString("Введите имя файла"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println();
-        //загрузка из файла всех данных
-        System.out.println("Хотите загрузить данные из файла?");
-        if (getUserString("Нажмите Y").toLowerCase(Locale.ROOT).equals("y")) {
-            try {
-                //book.bookFromCSVFile(getUserString("Введите имя файла: files/XXXXX.txt"));
-                TreeMap<String, Contact> newBook = book.bookFromJSON(getUserString("Введите имя файла: files/XXXXX.txt"));
-                System.out.println("LOADED:");
-                for (Map.Entry<String, Contact> me : newBook.entrySet()) {
-                    System.out.println("{" + me.getKey() + ": " + me.getValue() + "}");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        } while (repeatLoop);
     }
 
     public static Contact createContact(String name) {
-        Contact contact;
-        String fio = name;
         boolean repeatPhone;
-        //создадим массив номеров и заполним его
         ArrayList<String> phones = new ArrayList<>();
         do {
             repeatPhone = false;
@@ -106,23 +91,12 @@ public class Main {
         String birthDate = getUserString("дату рождения");
         String address = getUserString("адрес");
 
-        //создадим контакт и наполним его
-        contact = new Contact(fio, birthDate, phones, address);
-        return contact;
+        return new Contact(name, birthDate, phones, address);
     }
 
     private static String getUserString(String x) {
         Scanner scan = new Scanner(System.in);
         System.out.println(x);
         return scan.nextLine();
-    }
-
-    public static void demonstrate(String text, PhonesBook book) {
-        System.out.println(text);
-        for (Map.Entry<String, Contact> me : book.getAllBook().entrySet()) {
-            System.out.println("{" + me.getKey() + ": " + me.getValue() + "}");
-        }
-        System.out.println("________END_OF_DEMONSTRATE_________");
-        System.out.println();
     }
 }

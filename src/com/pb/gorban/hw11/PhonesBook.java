@@ -4,21 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 
 public class PhonesBook {
     private static TreeMap<String, Contact> phonesBook;
 
-    public PhonesBook(Comparator c) {
-        phonesBook = new TreeMap<>(c);
-    }
-
     public PhonesBook() {
         phonesBook = new TreeMap<>();
     }
-
-    //private TreeMap<String, Contact> phonesBook = new TreeMap<>();
 
     //добавление элемента
     public void addContact(Contact contact) {
@@ -50,8 +44,8 @@ public class PhonesBook {
         Comparator<Contact> multiComp = new ContactNameComparator()
                 .thenComparing(new ContactTimeComparator());
 
-        TreeMap<String, Contact> unsorted = new TreeMap<String, Contact>();
-        TreeMap<String, Contact> sorted = new TreeMap<String, Contact>();
+        TreeMap<String, Contact> unsorted = new TreeMap<>();
+        TreeMap<String, Contact> sorted = new TreeMap<>();
         TreeSet<Contact> persons = new TreeSet<>(multiComp);
         unsorted.putAll(phonesBook);
 
@@ -59,12 +53,7 @@ public class PhonesBook {
             persons.add(new Contact(c.getValue().getName(), c.getValue().getBirthDate(), c.getValue().getPhones(), c.getValue().getPath()));
         }
 
-        persons.forEach(new Consumer<Contact>() {
-            @Override
-            public void accept(Contact p) {
-                sorted.put(p.getName(), unsorted.get(p.getName()));
-            }
-        });
+        persons.forEach(p -> sorted.put(p.getName(), unsorted.get(p.getName())));
 
         return sorted;
     }
@@ -122,11 +111,12 @@ public class PhonesBook {
             json += br.readLine();
         }
         ObjectMapper objectMapper = new ObjectMapper();
-        TreeMap<String, Contact> treeMap = objectMapper.readValue(json, TreeMap.class);
+        TreeMap treeMap = objectMapper.readValue(json, TreeMap.class);
 
         br.close();
         fr.close();
-        phonesBook = treeMap;
+
+        phonesBook.putAll(treeMap);
         return treeMap;
     }
 
