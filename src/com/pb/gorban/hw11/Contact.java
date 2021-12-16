@@ -25,6 +25,7 @@ public class Contact {
 
     public void setName(String name) {
         this.name = name;
+        setChangeTime();
     }
 
     public String getBirthDate() {
@@ -33,6 +34,7 @@ public class Contact {
 
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
+        setChangeTime();
     }
 
     public ArrayList<String> getPhones() {
@@ -41,6 +43,7 @@ public class Contact {
 
     public void setPhones(String phone) {
         this.phones.add(phone);
+        setChangeTime();
     }
 
     public String getPath() {
@@ -49,6 +52,7 @@ public class Contact {
 
     public void setPath(String path) {
         this.path = path;
+        setChangeTime();
     }
 
     public long getChangeTime() {
