@@ -21,18 +21,15 @@ class Subscribe extends Thread {
         for (;;) {
             synchronized (list) {
                 try {
-                    if (list.size() <= 5) {
-                        list.notify();
-                        list.wait();
-                    } else {
+                    if (list.size() == 5) {
                         System.out.println();
                         System.out.println("---ВЫЧИТЫВАЕМ ОЧЕРЕДЬ----");
                         list.forEach(System.out::println);
                         list.clear();
                         System.out.println();
-                        list.notify();
-                        list.wait();
                     }
+                    list.notify();
+                    list.wait();
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -58,13 +55,9 @@ class Public extends Thread {
                         if (list.size() == 0) System.out.println("---НАПОЛНЯЕМ ОЧЕРЕДЬ---");
                         list.add((int) ( Math.random() * 101));
                         System.out.println("Кол-во в очереди: " + list.size());
-                        list.notify();
-                        list.wait();
-                    } else {
-                        System.out.println(getName() + " FULL");
-                        list.notify();
-                        list.wait();
                     }
+                    list.notify();
+                    list.wait();
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
