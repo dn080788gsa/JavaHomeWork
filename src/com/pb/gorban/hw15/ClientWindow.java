@@ -79,23 +79,20 @@ public class ClientWindow extends JFrame {
             }
         });
         // в отдельном потоке начинаем работу с сервером
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // бесконечный цикл
-                    while (true) {
-                        // если есть входящее сообщение
-                        if (inMessage.hasNext()) {
-                            // считываем его
-                            String inMes = inMessage.nextLine();
-                            jtaTextAreaMessage.append(inMes);
-                            // добавляем строку перехода
-                            jtaTextAreaMessage.append("\n");
-                    }
-                    }
-                } catch (Exception e) {
+        new Thread(() -> {
+            try {
+                // бесконечный цикл
+                while (true) {
+                    // если есть входящее сообщение
+                    if (inMessage.hasNext()) {
+                        // считываем его
+                        String inMes = inMessage.nextLine();
+                        jtaTextAreaMessage.append(inMes);
+                        // добавляем строку перехода
+                        jtaTextAreaMessage.append("\n");
                 }
+                }
+            } catch (Exception e) {
             }
         }).start();
         // добавляем обработчик события закрытия окна клиентского приложения

@@ -34,11 +34,8 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-            while (true) {
-                // сервер отправляет сообщение
-                server.sendMessageToAllClients("Новый участник в чате!");
-                break;
-            }
+            // сервер отправляет сообщение
+            server.sendMessageToAllClients("Новый участник в чате!");
 
             while (true) {
                 // Если от клиента пришло сообщение
