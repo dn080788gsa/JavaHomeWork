@@ -16,13 +16,10 @@ public class ClientHandler implements Runnable {
     private static final int PORT = 3443;
     // клиентский сокет
     private Socket clientSocket = null;
-    // количество клиента в чате, статичное поле
-    private static int clients_count = 0;
 
     // конструктор, который принимает клиентский сокет и сервер
     public ClientHandler(Socket socket, Server server) {
         try {
-            clients_count++;
             this.server = server;
             this.clientSocket = socket;
             this.outMessage = new PrintWriter(socket.getOutputStream());
@@ -40,7 +37,6 @@ public class ClientHandler implements Runnable {
             while (true) {
                 // сервер отправляет сообщение
                 server.sendMessageToAllClients("Новый участник в чате!");
-                server.sendMessageToAllClients("Клиентов в чате = " + clients_count);
                 break;
             }
 
@@ -82,7 +78,5 @@ public class ClientHandler implements Runnable {
     public void close() {
         // удаляем клиента из списка
         server.removeClient(this);
-        clients_count--;
-        server.sendMessageToAllClients("Клиентов в чате = " + clients_count);
     }
 }
